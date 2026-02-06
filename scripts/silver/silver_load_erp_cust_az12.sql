@@ -28,10 +28,13 @@ Source Table:
 
 Target Table:
     silver.erp_cust_az12
-
 ====================================================
 */
 
+PRINT '>> Truncating Table: silver.erp_cust_az12';
+TRUNCATE TABLE silver.erp_cust_az12;
+
+PRINT '>> Inserting Data into silver.erp_cust_az12';
 INSERT INTO silver.erp_cust_az12 (
     cid,
     bdate,
@@ -39,35 +42,43 @@ INSERT INTO silver.erp_cust_az12 (
 )
 
 SELECT 
-CASE WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4, LEN(cid))
-	ELSE cid
-END AS cid,
-CASE WHEN bdate > GETDATE() THEN NULL
-	ELSE bdate
-END AS bdate,
-CASE 
-    WHEN gen IS NULL THEN 'n/a'
-    WHEN UPPER(
-        TRIM(
-            REPLACE(
-                REPLACE(
-                    REPLACE(gen, CHAR(160), ''), -- non-breaking space
-                CHAR(9), ''),                  -- tab
-            CHAR(13), '')                     -- carriage return
-        )
-    ) IN ('F', 'FEMALE') THEN 'Female'
+    -- Normalize customer ID by removing NAS prefix
+    CASE 
+        WHEN cid LIKE 'NAS%' THEN SUBSTRING(cid, 4, LEN(cid))
+        ELSE cid
+    END AS cid,
 
-    WHEN UPPER(
-        TRIM(
-            REPLACE(
-                REPLACE(
-                    REPLACE(gen, CHAR(160), ''),
-                CHAR(9), ''),
-            CHAR(13), '')
-        )
-    ) IN ('M', 'MALE') THEN 'Male'
+    -- Validate birth date (no future dates)
+    CASE 
+        WHEN bdate > GETDATE() THEN NULL
+        ELSE bdate
+    END AS bdate,
 
-    ELSE 'n/a'
-END AS gen
--- this code was necessary because there were problems breaking spaces, a simple trim didn't work
-FROM bronze.erp_cust_az12
+    -- Standardize gender values
+    CASE 
+        WHEN gen IS NULL THEN 'n/a'
+
+        WHEN UPPER(
+            TRIM(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(gen, CHAR(160), ''), -- non-breaking space
+                    CHAR(9), ''),                  -- tab
+                CHAR(13), '')                     -- carriage return
+            )
+        ) IN ('F', 'FEMALE') THEN 'Female'
+
+        WHEN UPPER(
+            TRIM(
+                REPLACE(
+                    REPLACE(
+                        REPLACE(gen, CHAR(160), ''),
+                    CHAR(9), ''),
+                CHAR(13), '')
+            )
+        ) IN ('M', 'MALE') THEN 'Male'
+
+        ELSE 'n/a'
+    END AS gen
+
+FROM bronze.erp_cust_az12;
