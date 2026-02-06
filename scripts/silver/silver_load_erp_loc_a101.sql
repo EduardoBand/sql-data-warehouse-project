@@ -1,35 +1,40 @@
 /*
-===========================================================
-Silver Layer – Customer Location Standardization
-===========================================================
+====================================================
+ETL Script: Transform Customer Location Data – ERP (Bronze → Silver)
+====================================================
 
-This script loads and standardizes customer location data
-from the Bronze layer (bronze.erp_loc_a101) into the Silver
-layer (silver.erp_loc_a101), applying data cleansing and
-normalization rules to improve data quality and consistency.
+Script Purpose:
+    Cleans and standardizes ERP customer location data from the Bronze
+    layer (bronze.erp_loc_a101) before loading it into the Silver layer
+    (silver.erp_loc_a101).
 
-Transformations applied:
+Transformation Logic:
+    - Customer ID normalization:
+        * Removes hyphens from customer IDs to ensure a consistent
+          and standardized business key.
 
-- Customer ID normalization:
-  Removes hyphens from the `cid` field to create a
-  standardized business key.
+    - Country field cleansing:
+        * Removes hidden and non-printable characters such as:
+            - Non-breaking spaces (CHAR(160))
+            - Tab characters (CHAR(9))
+            - Carriage returns (CHAR(13))
+        * Trims leading and trailing whitespace.
+        * Normalizes casing for reliable comparisons.
 
-- Country field cleansing:
-  - Removes hidden and non-printable characters:
-    * Non-breaking spaces (CHAR(160))
-    * Tab characters (CHAR(9))
-    * Carriage returns (CHAR(13))
-  - Trims leading and trailing whitespace.
-  - Normalizes casing for consistent comparison.
+    - Country standardization:
+        * Maps known country codes to full country names:
+            - DE   → Germany
+            - US   → United States
+            - USA  → United States
+        * Replaces NULL or empty values with 'n/a'.
+        * Formats remaining values using Title Case for consistency.
 
-- Country standardization logic:
-  - Maps known country codes to full country names:
-    * DE   -> Germany
-    * US   -> United States
-    * USA  -> United States
-  - Replaces empty or NULL values with 'n/a'.
-  - Formats remaining values using Title Case.
-===========================================================
+Source Table:
+    bronze.erp_loc_a101
+
+Target Table:
+    silver.erp_loc_a101
+====================================================
 */
 
 INSERT INTO silver.erp_loc_a101 (cid, cntry)
