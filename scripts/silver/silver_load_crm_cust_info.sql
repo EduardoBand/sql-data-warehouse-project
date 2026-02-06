@@ -19,15 +19,18 @@ Script Purpose:
         * Removes rows with NULL cst_id
         * Removes rows with empty or NULL first/last names
 
-Target Table:
-    silver.crm_cust_info
-
 Source Table:
     bronze.crm_cust_info
 
+Target Table:
+    silver.crm_cust_info
 ====================================================
 */
 
+PRINT '>> Truncating Table: silver.crm_cust_info';
+TRUNCATE TABLE silver.crm_cust_info;
+
+PRINT '>> Inserting Data into silver.crm_cust_info';
 INSERT INTO silver.crm_cust_info (
     cst_id,
     cst_key,
@@ -42,26 +45,31 @@ SELECT
     cst_key,
     TRIM(cst_firstname) AS cst_firstname,
     TRIM(cst_lastname) AS cst_lastname,
+
+    -- Standardize marital status
     CASE 
         WHEN UPPER(TRIM(cst_marital_status)) = 'S' THEN 'Single'
         WHEN UPPER(TRIM(cst_marital_status)) = 'M' THEN 'Married'
         ELSE 'Unknown/Other'
     END AS cst_marital_status,
+
+    -- Standardize gender
     CASE 
         WHEN UPPER(TRIM(cst_gndr)) = 'F' THEN 'Female'
         WHEN UPPER(TRIM(cst_gndr)) = 'M' THEN 'Male'
         ELSE 'Unknown/Other'
     END AS cst_gndr,
+
     cst_create_date
 FROM (
-    SELECT *, 
+    SELECT *,
            ROW_NUMBER() OVER (
-               PARTITION BY cst_id 
+               PARTITION BY cst_id
                ORDER BY cst_create_date DESC
            ) AS flag_last
     FROM bronze.crm_cust_info
-    WHERE cst_id IS NOT NULL           -- Remove NULL IDs before row_number
-      AND TRIM(ISNULL(cst_firstname, '')) <> '' -- Remove empty first names
-      AND TRIM(ISNULL(cst_lastname, '')) <> ''  -- Remove empty last names
+    WHERE cst_id IS NOT NULL
+      AND TRIM(ISNULL(cst_firstname, '')) <> ''
+      AND TRIM(ISNULL(cst_lastname, '')) <> ''
 ) t
 WHERE flag_last = 1;
