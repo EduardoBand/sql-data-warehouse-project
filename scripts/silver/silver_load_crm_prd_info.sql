@@ -24,6 +24,10 @@
 ==========================================================
 */
 
+PRINT '>> Truncating Table: silver.crm_prd_info';
+TRUNCATE TABLE silver.crm_prd_info;
+
+PRINT '>> Inserting Data into silver.crm_prd_info';
 INSERT INTO silver.crm_prd_info (
     prd_id,
     cat_id,
