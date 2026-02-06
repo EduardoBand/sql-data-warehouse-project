@@ -1,13 +1,51 @@
 /*
-Purpose:
-Cleans and standardizes sales data from the Bronze layer before loading into Silver.
+====================================================
+ETL Script: Transform Sales Data – Bronze to Silver
+====================================================
 
-Logic applied:
-- Converts integer-based dates (YYYYMMDD) into DATE format
-- Replaces invalid dates (0 or incorrect length) with NULL
-- Recalculates sales amount when missing, invalid, or inconsistent
-- Fixes price values when missing or non-positive
+Script Purpose:
+    Cleans and standardizes sales data from the Bronze layer
+    (bronze.crm_sales_details) before loading it into the
+    Silver layer.
+
+Transformation Logic:
+    - Date normalization:
+        * Converts integer-based dates (YYYYMMDD) to DATE format.
+        * Replaces invalid dates (0 or incorrect length) with NULL
+          to avoid incorrect timelines.
+
+    - Sales amount validation:
+        * Recalculates sales amount when the value is:
+            - NULL
+            - Non-positive
+            - Inconsistent with quantity × price
+        * Uses quantity × absolute price as the corrected value.
+
+    - Price correction:
+        * Recomputes price when missing or non-positive.
+        * Derives price using sales ÷ quantity, preventing
+          division by zero with NULLIF().
+
+Source Table:
+    bronze.crm_sales_details
+
+Target Table:
+    silver.crm_sales_details
+
+====================================================
 */
+
+INSERT INTO silver.crm_sales_details (
+	sls_ord_num,
+	sls_prd_key,
+	sls_cust_id,
+	sls_order_dt,
+	sls_ship_dt,
+	sls_due_dt,
+	sls_sales,
+	sls_quantity,
+	sls_price
+)
 
 SELECT
     sls_ord_num,
