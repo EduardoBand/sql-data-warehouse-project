@@ -37,6 +37,10 @@ Target Table:
 ====================================================
 */
 
+PRINT '>> Truncating Table: silver.erp_loc_a101';
+TRUNCATE TABLE silver.erp_loc_a101;
+
+PRINT '>> Inserting Data into silver.erp_loc_a101';
 INSERT INTO silver.erp_loc_a101 (cid, cntry)
 
 SELECT 
@@ -57,20 +61,19 @@ SELECT
             UPPER(LEFT(cntry_clean, 1)) 
             + LOWER(SUBSTRING(cntry_clean, 2, LEN(cntry_clean)))
     END AS cntry
-    -- Hidden whitespace and junk characters required explicit cleaning
 
 FROM bronze.erp_loc_a101
 
 -- Normalize country values before applying business logic
 CROSS APPLY (
     SELECT 
-        UPPER(                                     -- Normalize casing
-            LTRIM(RTRIM(                          -- Remove leading/trailing spaces
-                REPLACE(                          -- Remove non-breaking spaces
-                    REPLACE(                      -- Remove tab characters
+        UPPER(
+            LTRIM(RTRIM(
+                REPLACE(
+                    REPLACE(
                         REPLACE(cntry, CHAR(160), ''),
                     CHAR(9), ''),
-                CHAR(13), '')                     -- Remove carriage returns
+                CHAR(13), '')
             ))
         ) AS cntry_clean
 ) c;
