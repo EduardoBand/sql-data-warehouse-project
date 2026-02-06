@@ -6,7 +6,7 @@ ETL Script: Transform Sales Data – Bronze to Silver
 Script Purpose:
     Cleans and standardizes sales data from the Bronze layer
     (bronze.crm_sales_details) before loading it into the
-    Silver layer.
+    Silver layer (silver.crm_sales_details).
 
 Transformation Logic:
     - Date normalization:
@@ -31,20 +31,23 @@ Source Table:
 
 Target Table:
     silver.crm_sales_details
-
 ====================================================
 */
 
+PRINT '>> Truncating Table: silver.crm_sales_details';
+TRUNCATE TABLE silver.crm_sales_details;
+
+PRINT '>> Inserting Data into silver.crm_sales_details';
 INSERT INTO silver.crm_sales_details (
-	sls_ord_num,
-	sls_prd_key,
-	sls_cust_id,
-	sls_order_dt,
-	sls_ship_dt,
-	sls_due_dt,
-	sls_sales,
-	sls_quantity,
-	sls_price
+    sls_ord_num,
+    sls_prd_key,
+    sls_cust_id,
+    sls_order_dt,
+    sls_ship_dt,
+    sls_due_dt,
+    sls_sales,
+    sls_quantity,
+    sls_price
 )
 
 SELECT
