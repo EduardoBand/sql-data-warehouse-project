@@ -82,7 +82,7 @@ data-warehouse-project/
 │
 ├── datasets/                           # Raw datasets used for the project (ERP and CRM data)
 │   
-├── docs/ # Documentation and diagrams
+├── docs/                               # Documentation and diagrams
 │   ├── data_catalog.md                 # Metadata and field descriptions for all datasets
 │   ├── data_model.drawio               # Draw.io file showing data model architecture
 │   ├── data_model.jpg                  # Exported image of the data model
