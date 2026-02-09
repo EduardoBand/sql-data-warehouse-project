@@ -45,6 +45,7 @@ All tools used are freely available:
 - **[SQL Server Management Studio (SSMS)](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16):** GUI for managing SQL Server databases.  
 - **[Draw.io](https://www.drawio.com/):** For designing architecture diagrams, data models, and flows.  
 - **[Notion Project Steps](https://www.notion.so/Data-Warehouse-Project-2fea273a0c4280ffb475c81996d772ca?source=copy_link):** My personal detailed step-by-step project guide and tasks.
+# Note: This project is fully implemented in SQL. No additional programming or Python packages are required.
 
 ---
 
@@ -103,8 +104,8 @@ data-warehouse-project/
 ├── tests/                              # Test scripts and quality files
 │
 ├── README.md                           # Project overview and instructions
-├── LICENSE                             # License information for the repository
-└── requirements.txt                    # Dependencies and requirements for the project
+└── LICENSE                             # License information for the repository
+└── requirements.txt                    # No external dependencies required
 ```
 ---
 
