@@ -73,7 +73,7 @@ All tools used are freely available:
 
 These insights allow stakeholders to make informed business decisions.  
 
-More details are available in [docs/requirements.md](docs/requirements.md).
+More details are available in [docs/requirements.md](docs/data_catalog.md).
 
 ---
 
