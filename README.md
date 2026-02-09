@@ -83,17 +83,17 @@ data-warehouse-project/
 ├── datasets/                           # Raw datasets used for the project (ERP and CRM data)
 │   
 ├── docs/ # Documentation and diagrams
-│   ├── data_catalog.md # Metadata and field descriptions for all datasets
-│   ├── data_model.drawio # Draw.io file showing data model architecture
-│   ├── data_model.jpg # Exported image of the data model
-│   ├── dataflow_diagram.drawio # Draw.io file illustrating ETL/dataflow processes
-│   ├── dataflow_diagram.jpg # Exported image of dataflow
-│   ├── integration_model.drawio # Draw.io file showing integrated data model
-│   ├── integration_model.jpg # Exported image of integrated model
-│   ├── naming_conventions.md # Standard naming rules for tables, columns, files
-│   ├── warehouse_architecture.drawio # Draw.io version of the Medallion Architecture
-│   ├── warehouse_architecture.jpg # Exported image of the architecture diagram
-│   ├── requirements.md # Detailed project and analytics requirements
+│   ├── data_catalog.md                 # Metadata and field descriptions for all datasets
+│   ├── data_model.drawio               # Draw.io file showing data model architecture
+│   ├── data_model.jpg                  # Exported image of the data model
+│   ├── dataflow_diagram.drawio         # Draw.io file illustrating ETL/dataflow processes
+│   ├── dataflow_diagram.jpg            # Exported image of dataflow
+│   ├── integration_model.drawio        # Draw.io file showing integrated data model
+│   ├── integration_model.jpg           # Exported image of integrated model
+│   ├── naming_conventions.md           # Standard naming rules for tables, columns, files
+│   ├── warehouse_architecture.drawio   # Draw.io version of the Medallion Architecture
+│   ├── warehouse_architecture.jpg      # Exported image of the architecture diagram
+│   ├── requirements.md                 # Detailed project and analytics requirements
 │
 ├── scripts/                            # SQL scripts for ETL and transformations
 │   ├── bronze/                         # Scripts for extracting and loading raw data
